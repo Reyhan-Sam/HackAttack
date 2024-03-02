@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            max-height: 100vh;
+            overflow: hidden;
+        }
+
+        main {
+            top: 100px;
+            left: 100px;
+            height: 50%;
+            width: 50%;
+        }
+        canvas {
+            display: none;
+        }
+
+        button {
+            border: 0;
+            outline: none;
+            background: #00000070;
+            color: #FFFFFF;
+            padding: 4px 8px;
+            height: 30px;
+            min-width: 30px;
+            border-radius: 24px;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+        }
+
+        .camera-ctn {
+            position: relative;
+            background: #000000;
+        }
+
+        .camera-view video {
+            height: 100vh;
+            width: 100vw;
+            object-fit: cover;
+            transform: scaleX(-1);
+        }
+
+        .camera-bottom {
+            height: 250px;
+            background: #00000050;
+            position: absolute;
+            inset: 0;
+            top: auto;
+            padding: 0 5%;
+            display: grid;
+            place-items: center;
+        }
+
+        .camera-bottom > .inner {
+            display: grid;
+            place-items: center;
+            max-width: 500px;
+        }
+
+        .shutter-ctn {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            width: 100%;
+        }
+        
+        .shutter {
+            height: 80px;
+            width: 80px;
+            background: #FFBBFF;
+            border-radius: 50%;
+        }
+        
+        .shutter:active {
+            transform: scale(0.8);
+        }
+
+        .switch-device {
+            height: 55px;
+            width: 55px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <video id="camera-stream" autoplay loop muted>
+            <source src="">
+        </video>
+    
+        <div class="shutter-ctn">
+            <button id="shutter" class="shutter"></button>
+        </div>
+    
+        <canvas id="canvas"></canvas>
+    
+        <div id="gallery-view">
+            <button id="prev">
+                PREV
+            </button>
+            <img data-index="0" src="" alt="current viewed image">
+            <button id="next">
+                NEXT
+            </button>
+        </div>
+    </main>
+
+    <script>
+        const cameraVideoStream = document.getElementById('camera-stream');
+        const shutterButton = document.getElementById('shutter');
+        const canvas = document.getElementById('canvas');
+
+        if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia({video: true})) {
+            navigator.mediaDevices
+            .getUserMedia({video: true})
+            .then ((stream) => {
+                cameraVideoStream.srcObject = stream;
+                cameraVideoStream.play();
+            })
+        }
+
+        let width = window.innerWidth;
+        let height = 0;
+        let streaming = false
+
+        cameraVideoStream.addEventListener(
+            "canplay", (ev) => {
+                if (!streaming) {
+                    height = cameraVideoStream.videoHeight / (cameraVideoStream.videoWidth / width);
+
+                    canvas.setAttribute('width', width);
+                    canvas.setAttribute('height', height);
+                    cameraVideoStream.setAttribute("width", width);
+                    cameraVideoStream.setAttribute("height", height);
+                    streaming = true;
+
+                }
+            },
+            false
+        );
+
+        function captureImage() {
+            const canvasContext = canvas.getContext('2x');
+            canvas.width = width;
+            canvas.height = height;
+            canvasContext.drawImage(cameraVideoStream, 0, 0, width, height);
+
+            const data = canvas.toDataURL('image/png')
+            currentImageelement.src = data;
+        }
+
+        shutterButton.addEventListener('click', () => captureImage());
+    </script>
+</body>
+</html>
