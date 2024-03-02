@@ -1,162 +1,157 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <style>
-        body {
-            margin: 0;
-            max-height: 100vh;
-            overflow: hidden;
-        }
+    /* CSS comes here */
+    #video {
+        border: 1px solid black;
+        width: 320px;
+        height: 240px;
+    }
 
-        main {
-            top: 100px;
-            left: 100px;
-            height: 50%;
-            width: 50%;
-        }
-        canvas {
-            display: none;
-        }
+    #photo {
+        border: 1px solid black;
+        width: 320px;
+        height: 240px;
+    }
 
-        button {
-            border: 0;
-            outline: none;
-            background: #00000070;
-            color: #FFFFFF;
-            padding: 4px 8px;
-            height: 30px;
-            min-width: 30px;
-            border-radius: 24px;
-            display: grid;
-            place-items: center;
-            cursor: pointer;
-        }
+    #canvas {
+        display: none;
+    }
 
-        .camera-ctn {
-            position: relative;
-            background: #000000;
-        }
+    .camera {
+        width: 340px;
+        display: inline-block;
+    }
 
-        .camera-view video {
-            height: 100vh;
-            width: 100vw;
-            object-fit: cover;
-            transform: scaleX(-1);
-        }
+    .output {
+        width: 340px;
+        display: inline-block;
+    }
 
-        .camera-bottom {
-            height: 250px;
-            background: #00000050;
-            position: absolute;
-            inset: 0;
-            top: auto;
-            padding: 0 5%;
-            display: grid;
-            place-items: center;
-        }
+    #startbutton {
+        display: block;
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+        bottom: 36px;
+        padding: 5px;
+        background-color: #6a67ce;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+        color: rgba(255, 255, 255, 1.0);
+        cursor: pointer;
+    }
 
-        .camera-bottom > .inner {
-            display: grid;
-            place-items: center;
-            max-width: 500px;
-        }
-
-        .shutter-ctn {
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            width: 100%;
-        }
-        
-        .shutter {
-            height: 80px;
-            width: 80px;
-            background: #FFBBFF;
-            border-radius: 50%;
-        }
-        
-        .shutter:active {
-            transform: scale(0.8);
-        }
-
-        .switch-device {
-            height: 55px;
-            width: 55px;
-            border-radius: 50%;
-        }
+    .contentarea {
+        font-size: 16px;
+        font-family: Arial;
+        text-align: center;
+    }
     </style>
+    <title>My Favorite Sport</title>
 </head>
+
 <body>
-    <main>
-        <video id="camera-stream" autoplay loop muted>
-            <source src="">
-        </video>
-    
-        <div class="shutter-ctn">
-            <button id="shutter" class="shutter"></button>
+    <div class="contentarea">
+        <h1>
+            Using Javascript to capture Photo
+        </h1>
+        <div class="camera">
+            <video id="video">Video stream not available.</video>
         </div>
-    
+        <div><button id="startbutton">Take photo</button></div>
         <canvas id="canvas"></canvas>
-    
-        <div id="gallery-view">
-            <button id="prev">
-                PREV
-            </button>
-            <img data-index="0" src="" alt="current viewed image">
-            <button id="next">
-                NEXT
-            </button>
+        <div class="output">
+            <img id="photo" alt="The screen capture will appear in this box.">
         </div>
-    </main>
+    </div>
 
     <script>
-        const cameraVideoStream = document.getElementById('camera-stream');
-        const shutterButton = document.getElementById('shutter');
-        const canvas = document.getElementById('canvas');
+    /* JS comes here */
+    (function() {
 
-        if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia({video: true})) {
-            navigator.mediaDevices
-            .getUserMedia({video: true})
-            .then ((stream) => {
-                cameraVideoStream.srcObject = stream;
-                cameraVideoStream.play();
-            })
-        }
+        var width = 320; // We will scale the photo width to this
+        var height = 0; // This will be computed based on the input stream
 
-        let width = window.innerWidth;
-        let height = 0;
-        let streaming = false
+        var streaming = false;
 
-        cameraVideoStream.addEventListener(
-            "canplay", (ev) => {
+        var video = null;
+        var canvas = null;
+        var photo = null;
+        var startbutton = null;
+
+        function startup() {
+            video = document.getElementById('video');
+            canvas = document.getElementById('canvas');
+            photo = document.getElementById('photo');
+            startbutton = document.getElementById('startbutton');
+
+            navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    audio: false
+                })
+                .then(function(stream) {
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(function(err) {
+                    console.log("An error occurred: " + err);
+                });
+
+            video.addEventListener('canplay', function(ev) {
                 if (!streaming) {
-                    height = cameraVideoStream.videoHeight / (cameraVideoStream.videoWidth / width);
+                    height = video.videoHeight / (video.videoWidth / width);
 
+                    if (isNaN(height)) {
+                        height = width / (4 / 3);
+                    }
+
+                    video.setAttribute('width', width);
+                    video.setAttribute('height', height);
                     canvas.setAttribute('width', width);
                     canvas.setAttribute('height', height);
-                    cameraVideoStream.setAttribute("width", width);
-                    cameraVideoStream.setAttribute("height", height);
                     streaming = true;
-
                 }
-            },
-            false
-        );
+            }, false);
 
-        function captureImage() {
-            const canvasContext = canvas.getContext('2x');
-            canvas.width = width;
-            canvas.height = height;
-            canvasContext.drawImage(cameraVideoStream, 0, 0, width, height);
+            startbutton.addEventListener('click', function(ev) {
+                takepicture();
+                ev.preventDefault();
+            }, false);
 
-            const data = canvas.toDataURL('image/png')
-            currentImageelement.src = data;
+            clearphoto();
         }
 
-        shutterButton.addEventListener('click', () => captureImage());
+
+        function clearphoto() {
+            var context = canvas.getContext('2d');
+            context.fillStyle = "#AAA";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            var data = canvas.toDataURL('image/png');
+            photo.setAttribute('src', data);
+        }
+
+        function takepicture() {
+            var context = canvas.getContext('2d');
+            if (width && height) {
+                canvas.width = width;
+                canvas.height = height;
+                context.drawImage(video, 0, 0, width, height);
+
+                var data = canvas.toDataURL('image/png');
+                photo.setAttribute('src', data);
+            } else {
+                clearphoto();
+            }
+        }
+
+        window.addEventListener('load', startup, false);
+    })();
+
+    //https://www.studytonight.com/post/capture-photo-using-webcam-in-javascript
     </script>
 </body>
-</html>
+
+</html> 
