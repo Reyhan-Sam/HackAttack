@@ -5,3 +5,5 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     return "Hello, Flask!"
+def home():
+    return "Hello guys its me on flask"
