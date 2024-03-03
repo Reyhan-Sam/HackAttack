@@ -6,9 +6,18 @@ import io
 import os
 from datetime import datetime
 from roboflow import Roboflow
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
+DB_NAME = "database.db"
+
 
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+db.init_app(app)
+
+
 
 rf = Roboflow(api_key="FBQSwgHbiaU0halM4Nxb")
 project = rf.workspace().project("hackattackk")
