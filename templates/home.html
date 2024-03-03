@@ -31,10 +31,11 @@
     <style>
       body {
         font-family: Anta;
-        background-image: url("../static/img/inventorybg.jpg");
+        background-image: url("../static/img/homebg.png");
         background-repeat: no-repeat;
         background-position: center;
-        background-size: contain;
+        background-size: cover;
+
       }
 
       h1 {
@@ -48,6 +49,12 @@
       <div class="d-flex justify-content-center mt-4">
         <a href="{{ url_for('scanitem') }}" class="btn bg-success font-weight-bold">Scan Items</a>
         </button>
+      </div>
+
+      <div class="d-flex justify-content-center mt-4">
+        <a href="{{ url_for('view_inventory') }}" class="btn bg-success font-weight-bold">View Inventory</a>
+      </div>
+      
       </div>
     </div>
 

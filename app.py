@@ -70,6 +70,11 @@ def login():
     # If the request method is GET, render the login page
     return render_template("index.html")
 
+@app.route("/viewInventory")
+def view_inventory():
+    # Render the viewInventory page
+    return render_template("viewInventory.html")
+
 @app.route('/capture', methods=['POST'])
 def capture():
     data = request.get_json()
