@@ -39,11 +39,26 @@
         font-family: Anta;
         font-size: 45px;
       }
+      img{
+        width:70px;
+        height: 80px;
+      }
+      body > div > div{
+        display: flex; /* Align items in a row */
+  align-items: center; /* Center items vertically */
+  justify-content: center; /* Center items horizontally if you want */
+  gap: 10px;
+      }
     </style>
   </head>
   <body>
     <div>
+      <div>
+        <img src="../static/img/logo.png" alt="logo">
       <h1 class="text-center pt-5">Welcome to PantrySidekick</h1>
+
+      </div>
+      
       <br />
       <p class="text-center font-italic">
         An app built around the 12th Sustainable Development Goal - "Ensure sustainabale consumption and production patterns" focused on <br> identifying pantry items using visual image detection along with keeping a track of the items and their expiry dates.
