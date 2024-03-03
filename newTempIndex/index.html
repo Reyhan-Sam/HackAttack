@@ -47,6 +47,7 @@
         " ...... some sustainability quotes .... "
       </p>
 
+<<<<<<< HEAD
       <div class="loginSignupForm mt-5">
         <div class="form-group w-50 mx-auto font-weight-bold">
           <label for="username">Username: </label>
@@ -67,18 +68,21 @@
             class="form-control"
             placeholder="Password"
           />
+=======
+      <form class="loginSignupForm mt-5" action="/login" method="post">
+        <div class="form-group w-50 mx-auto">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required />
         </div>
-      </div>
-
-      <div class="d-flex justify-content-center mt-4">
-        <button
-          type="submit"
-          class="btn bg-success"
-          onclick="window.location.href='home.html'"
-        >
-          Login
-        </button>
-      </div>
+        <div class="form-group w-50 mx-auto">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required />
+>>>>>>> refs/remotes/origin/main
+        </div>
+        <div class="d-flex justify-content-center mt-4">
+            <button type="submit" class="btn bg-success">Login</button>
+        </div>
+    </form>
 
       <div class="d-flex justify-content-center mt-1">
         <p class="mr-1">No account ?</p>
