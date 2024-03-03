@@ -7,7 +7,9 @@ import os
 from datetime import datetime
 from roboflow import Roboflow
 from flask_sqlalchemy import SQLAlchemy
-from models import *
+from datetime import datetime
+
+dateformat = '%Y-%m-%d'
 
 
 
@@ -15,7 +17,22 @@ from models import *
 db = SQLAlchemy()
 DB_NAME = "database.db"
 
+from app import db
+from flask_login import UserMixin
+from sqlalchemy.sql import func
 
+class Food_item(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(150))
+    expiry_date = db.Column(db.DateTime(), default=func.now())
+    # user_id = db.Column(db.Integer, foreign_key=True)
+
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(150), unique=True)
+    password = db.Column(db.String(150))
+    user_name = db.Column(db.String(150))
+    # food_items = db.relationship('Food_item')
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
@@ -98,6 +115,9 @@ def capture():
         # For example, handling the most confident prediction
         most_confident_prediction = max(predictions, key=lambda x: x['confidence'])
         print(f"Detected: {most_confident_prediction['class']} with confidence: {most_confident_prediction['confidence']}")
+        food_item = Food_item(expiry_date=datetime.strptime(expiry_date,dateformat), name=most_confident_prediction['class'])
+        db.session.add(food_item)
+        db.session.commit()
         return jsonify({'message': 'Detection successful!', 'class': most_confident_prediction['class'], 'confidence': most_confident_prediction['confidence']})
     else:
         print("No detection made.")
