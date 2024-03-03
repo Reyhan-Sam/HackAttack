@@ -1,13 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Title</title>
+    <title>Signup Page</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
+    <style>
+      body {
+        background-image: url("../static/img/signup.jpg");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        font-family: Anta !important;
+        font-weight: 700 !important;
+      }
+      h1 {
+        font-family: Anta;
+        font-weight: 800 !important;
+      }
+    </style>
 
     <!-- Bootstrap CSS -->
     <link
@@ -16,18 +30,20 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
-
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      href="https://fonts.googleapis.com/css2?family=Anta&display=swap"
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css') }}"
     />
+
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
   </head>
   <body>
-    <div class="vh-100 bg-warning mx-10">
+    <div class="vh-100 mx-10">
       <h1 class="text-center pt-5">
         Let's Save the Food for the rest of the WORLD
       </h1>

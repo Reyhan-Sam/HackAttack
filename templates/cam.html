@@ -1,39 +1,54 @@
-<!doctype html>
-
-<head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anta&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
     <style>
-    /* CSS comes here */
-    #video {
+      /* CSS comes here */
+      #video {
+        width: 320px;
+        height: 240px;
+        border: 4px solid black;
+        border-radius: 5%;
+      }
+
+      #photo {
         border: 1px solid black;
         width: 320px;
         height: 240px;
-    }
+      }
 
-    #photo {
-        border: 1px solid black;
-        width: 320px;
-        height: 240px;
-    }
-
-    #canvas {
+      #canvas {
         display: none;
-    }
+      }
 
-    .camera {
+      .camera {
+        width: 100%;
+        display: block;
+      }
+
+      /* .output {
         width: 340px;
         display: inline-block;
-    }
+    } */
 
-    .output {
-        width: 340px;
-        display: inline-block;
-    }
-
-    #startbutton {
+      /* #startbutton {
         display: block;
         position: relative;
         margin-left: auto;
         margin-right: auto;
+        margin-top:40px;
         bottom: 36px;
         padding: 5px;
         background-color: #6a67ce;
@@ -41,36 +56,84 @@
         font-size: 14px;
         color: rgba(255, 255, 255, 1.0);
         cursor: pointer;
-    }
+    } */
+      #startbutton {
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        color: rgba(255, 255, 255, 1);
+        background-color: #6a67ce;
+      }
 
-    .contentarea {
+      .contentarea {
         font-size: 16px;
         font-family: Arial;
         text-align: center;
-    }
-    </style>
-    <title>My Favorite Sport</title>
-</head>
+      }
+      .container {
+        height: 50%;
+        margin-top: 20px;
+      }
+      .container > .scanner {
+        height: 100%;
+        width: 100%;
+        border: 3px solid black;
+        border-radius: 5%;
+      }
 
-<body>
+      .btn {
+        font-family: Anta;
+      }
+      label {
+        margin-left: 5px;
+        font-weight: 700;
+        font-family: Anta;
+      }
+      body {
+        background-image: url(../static/img/indexbg.jpg);
+        font-family: Anta;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+    </style>
+
+    <title>My Favorite Sport</title>
+  </head>
+
+  <body>
     <div class="contentarea">
-        <h1>
-            Using Javascript to capture Photo
-        </h1>
-        <div class="camera">
-            <video id="video">Video stream not available.</video>
-        </div>
-        <div><button id="startbutton">Take photo</button></div>
-        <canvas id="canvas"></canvas>
-        <div class="output">
-            <img id="photo" alt="The screen capture will appear in this box.">
-        </div>
+      <h1>Using Javascript to capture Photo</h1>
+      <div class="camera">
+        <video id="video">Video stream not available.</video>
+      </div>
+      <button id="startbutton" class="btn">Take photo</button>
+    </div>
+    <div class="d-flex justify-content-center">
+      <div class="d-flex align-items-center mt-4">
+        <label for="amount" class="mr-2 ml-5">Expiration Date: </label>
+        <input
+          type="text"
+          name=""
+          id="Date"
+          class="form-control"
+          placeholder="Expiration Date "
+          style="width: 200px"
+        />
+      </div>
+      <div class="d-flex justify-content-center mt-4">
+        <button
+          type="submit"
+          class="btn bg-success font-weight-bold ml-5"
+          onclick="window.location.href='viewInventory.html'"
+        >
+          Add to Inventory
+        </button>
+      </div>
     </div>
 
     <script>
-    /* JS comes here */
-    (function() {
-
+      /* JS comes here */
+      (function () {
         var width = 320; // We will scale the photo width to this
         var height = 0; // This will be computed based on the input stream
 
@@ -82,76 +145,83 @@
         var startbutton = null;
 
         function startup() {
-            video = document.getElementById('video');
-            canvas = document.getElementById('canvas');
-            photo = document.getElementById('photo');
-            startbutton = document.getElementById('startbutton');
+          video = document.getElementById("video");
+          canvas = document.getElementById("canvas");
+          photo = document.getElementById("photo");
+          startbutton = document.getElementById("startbutton");
 
-            navigator.mediaDevices.getUserMedia({
-                    video: true,
-                    audio: false
-                })
-                .then(function(stream) {
-                    video.srcObject = stream;
-                    video.play();
-                })
-                .catch(function(err) {
-                    console.log("An error occurred: " + err);
-                });
+          navigator.mediaDevices
+            .getUserMedia({
+              video: true,
+              audio: false,
+            })
+            .then(function (stream) {
+              video.srcObject = stream;
+              video.play();
+            })
+            .catch(function (err) {
+              console.log("An error occurred: " + err);
+            });
 
-            video.addEventListener('canplay', function(ev) {
-                if (!streaming) {
-                    height = video.videoHeight / (video.videoWidth / width);
+          video.addEventListener(
+            "canplay",
+            function (ev) {
+              if (!streaming) {
+                height = video.videoHeight / (video.videoWidth / width);
 
-                    if (isNaN(height)) {
-                        height = width / (4 / 3);
-                    }
-
-                    video.setAttribute('width', width);
-                    video.setAttribute('height', height);
-                    canvas.setAttribute('width', width);
-                    canvas.setAttribute('height', height);
-                    streaming = true;
+                if (isNaN(height)) {
+                  height = width / (4 / 3);
                 }
-            }, false);
 
-            startbutton.addEventListener('click', function(ev) {
-                takepicture();
-                ev.preventDefault();
-            }, false);
+                video.setAttribute("width", width);
+                video.setAttribute("height", height);
+                canvas.setAttribute("width", width);
+                canvas.setAttribute("height", height);
+                streaming = true;
+              }
+            },
+            false
+          );
 
-            clearphoto();
+          startbutton.addEventListener(
+            "click",
+            function (ev) {
+              takepicture();
+              ev.preventDefault();
+            },
+            false
+          );
+
+          clearphoto();
         }
 
-
         function clearphoto() {
-            var context = canvas.getContext('2d');
-            context.fillStyle = "#AAA";
-            context.fillRect(0, 0, canvas.width, canvas.height);
+          var context = canvas.getContext("2d");
+          context.fillStyle = "#AAA";
+          context.fillRect(0, 0, canvas.width, canvas.height);
 
-            var data = canvas.toDataURL('image/png');
-            photo.setAttribute('src', data);
+          var data = canvas.toDataURL("image/png");
+          photo.setAttribute("src", data);
         }
 
         function takepicture() {
-            var context = canvas.getContext('2d');
-            if (width && height) {
-                canvas.width = width;
-                canvas.height = height;
-                context.drawImage(video, 0, 0, width, height);
+          var context = canvas.getContext("2d");
+          if (width && height) {
+            canvas.width = width;
+            canvas.height = height;
+            context.drawImage(video, 0, 0, width, height);
 
-                var data = canvas.toDataURL('image/png');
-                photo.setAttribute('src', data);
-            } else {
-                clearphoto();
-            }
+            var data = canvas.toDataURL("image/png");
+            photo.setAttribute("src", data);
+          } else {
+            clearphoto();
+          }
         }
 
-        window.addEventListener('load', startup, false);
-    })();
+        window.addEventListener("load", startup, false);
+      })();
 
-    //https://www.studytonight.com/post/capture-photo-using-webcam-in-javascript
+      //https://www.studytonight.com/post/capture-photo-using-webcam-in-javascript
     </script>
-</body>
-
-</html> 
+  </body>
+</html>

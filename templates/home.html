@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Title</title>
+    <title>Home</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anta&display=swap"
+      rel="stylesheet"
     />
 
     <!-- Bootstrap CSS -->
@@ -16,53 +22,37 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
-
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      href="https://fonts.googleapis.com/css2?family=Anta&display=swap"
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/main.css') }}"
     />
+    <style>
+      body {
+        font-family: Anta;
+        background-image: url("../static/img/inventorybg.jpg");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+      }
+
+      h1 {
+        font-weight: 600;
+      }
+    </style>
   </head>
   <body>
-    <div class="wrapper vh-100 bg-warning">
+    <div class="wrapper vh-100 font-weight-bold">
       <h1 class="text-center">Welcome User</h1>
 
       <div class="d-flex justify-content-center mt-4">
         <button
           type="submit"
-          class="btn bg-success"
-          onclick="window.location.href='scanItem.html'"
+          class="btn bg-success font-weight-bold"
+          onclick="window.location.href='cam.html'"
         >
           Scan Items
-        </button>
-      </div>
-
-      <div class="d-flex justify-content-center mt-4">
-        <button
-          type="submit"
-          class="btn bg-success"
-          onclick="window.location.href='viewInventory.html'"
-        >
-          View Inventory
-        </button>
-      </div>
-
-      <div class="d-flex justify-content-center mt-4">
-        <button
-          type="submit"
-          class="btn bg-success"
-          onclick="window.location.href='createRecipe.html'"
-        >
-          Create Recipes from your Fridge
-        </button>
-      </div>
-
-      <div class="d-flex justify-content-center mt-4">
-        <button
-          type="submit"
-          class="btn bg-success"
-          onclick="window.location.href='index.html'"
-        >
-          Log Out
         </button>
       </div>
     </div>
