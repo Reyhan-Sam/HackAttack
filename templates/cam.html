@@ -37,9 +37,19 @@
             background-color: #6a67ce;
         }
 
+        #startbutton:active {
+            background-color: red;
+
+        }
+        
+        #startbutton::after {
+            background-color: red;
+
+        }
+
         .contentarea {
             font-size: 16px;
-            font-family: Arial;
+            font-family: Anta, sans;
             text-align: center;
         }
 
@@ -54,6 +64,11 @@
             font-family: Anta;
         }
 
+        .btn-color-change{
+            background-color: #4CAF50;
+            color: white;
+        }
+
         label {
             margin-left: 5px;
             font-weight: 700;
@@ -61,24 +76,25 @@
         }
 
         body {
-            background-image: url(backimg.jpg);
+            background-image: url(../static/img/scanning.png);
             font-family: Anta;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
         }
+        
     </style>
     <title>Scan Items</title>
 </head>
 <body>
 <canvas id="canvas" style="display: none;"></canvas>
 <div class="contentarea">
-    <h1>Using Javascript to capture Photo</h1>
+    <h1>Scan Your Items</h1>
     <div class="camera">
         <video id="video">Video stream not available.</video>
     </div>
-    <button id="startbutton" class="btn">Take photo</button>
+    <button id="startbutton" class="btn .btn-color-change">Take photo</button>
 </div>
 <div class="d-flex justify-content-center">
     <div class="d-flex align-items-center mt-4">
@@ -91,6 +107,10 @@
         </button>
     </div>
 </div>
+<div class="d-flex justify-content-center mt-4">
+    <a href="{{ url_for('home') }}" class="btn bg-success font-weight-bold">Done</a>
+</div>
+
 
 <script>
     (function() {
@@ -152,6 +172,9 @@
 
         window.onload = startup;
     })();
+    document.getElementById('startbutton').addEventListener('click', function() {
+        this.classList.toggle('btn-color-change');
+    });
 </script>
 </body>
 </html>
