@@ -1,79 +1,141 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anta&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
-        #video {
-            border: 1px solid black;
-            width: 320px;
-            height: 240px;
-        }
+      /* CSS styles */
+      #video {
+        width: 320px;
+        height: 240px;
+        border: 0px solid black;
+        border-radius: 5%;
+        background-size: cover;
+    }
 
-        #photo {
-            border: 1px solid black;
-            width: 320px;
-            height: 240px;
-        }
+    #photo {
+        border: 1px solid black;
+        width: 320px;
+        height: 240px;
+    }
 
-        #canvas {
-            display: none;
-        }
+    #canvas {
+        display: none;
+        
+    }
 
-        .camera {
-            width: 340px;
-            display: inline-block;
-        }
+    .camera {
+        width: 100%;
+        display: block;
+        
+        
+    }
 
-        .output {
-            width: 340px;
-            display: inline-block;
-        }
+    /* .output {
+        width: 340px;
+        display: inline-block;
+    } */
 
-        #startbutton {
-            display: block;
-            position: relative;
-            margin-left: auto;
-            margin-right: auto;
-            bottom: 36px;
-            padding: 5px;
-            background-color: #6a67ce;
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            font-size: 14px;
-            color: rgba(255, 255, 255, 1.0);
-            cursor: pointer;
-        }
+    /* #startbutton {
+        display: block;
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top:40px;
+        bottom: 36px;
+        padding: 5px;
+        background-color: #6a67ce;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+        color: rgba(255, 255, 255, 1.0);
+        cursor: pointer;
+    } */
+    #startbutton{
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        color: rgba(255, 255, 255, 1.0);
+        background-color: #6a67ce;
 
-        .contentarea {
-            font-size: 16px;
-            font-family: Arial;
-            text-align: center;
-        }
+    }
+
+    .contentarea {
+        font-size: 16px;
+        font-family: Arial;
+        text-align: center;
+    }
+    .container{
+        height: 50%;
+        margin-top: 20px;
+        border: 3px solid black;
+        border-radius: 5%;
+        
+      }
+      .container > .scanner{
+        height: 100%;
+        width: 100%;
+        border: 3px solid black;
+        border-radius: 5%;
+      }
+      
+      .btn{
+        font-family: Anta;
+      }
+      label{
+        margin-left: 5px;
+        font-weight: 700;
+        font-family: Anta;
+        
+      }
+      body{
+        background-image:url(backimg.jpg);
+    font-family: Anta;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+      }
     </style>
-    <title>My Favorite Sport</title>
+    <title>Scan Items</title>
 </head>
 <body>
-    <div class="contentarea">
-        <h1>Using Javascript to capture Photo</h1>
-        <div class="camera">
-            <video id="video">Video stream not available.</video>
-        </div>
-        <div><button id="startbutton">Take photo</button></div>
-        <canvas id="canvas"></canvas>
-        <div class="output">
-            <img id="photo" alt="The screen capture will appear in this box.">
-        </div>
+<div class="contentarea">
+    <h1>Using Javascript to capture Photo</h1>
+    <div class="camera">
+        <video id="video">Video stream not available.</video>
     </div>
+    <button id="startbutton" class="btn">Take photo</button>
+</div>
+<div class="d-flex justify-content-center">
+    <div class="d-flex align-items-center mt-4">
+        <label for="amount" class="mr-2 ml-5">Expiration Date: </label>
+        <input type="text" id="Date" class="form-control" placeholder="Expiration Date " style="width: 200px">
+    </div>
+    <div class="d-flex justify-content-center mt-4">
+        <button type="submit" class="btn bg-success font-weight-bold ml-5" onclick="window.location.href='viewInventory.html'">
+            Add to Inventory
+        </button>
+    </div>
+</div>
 
-    <script>
-        (function() {
-            var width = 320; // We will scale the photo width to this
-            var height = 0; // This will be computed based on the input stream
+<script>
+    (function() {
+        var width = 320; // We will scale the photo width to this
+        var height = 0; // This will be computed based on the input stream
+        var streaming = false;
+        var video = null;
+        var canvas = null;
+        var photo = null;
+        var startbutton = null;
 
-            var video = document.getElementById('video');
-            var canvas = document.getElementById('canvas');
-            var photo = document.getElementById('photo');
-            var startbutton = document.getElementById('startbutton');
+        function startup() {
+            video = document.getElementById('video');
+            canvas = document.getElementById('canvas');
+            photo = document.getElementById('photo');
+            startbutton = document.getElementById('startbutton');
 
-            navigator.mediaDevices.getUserMedia({video: true, audio: false})
+            navigator.mediaDevices.getUserMedia({ video: true, audio: false })
                 .then(function(stream) {
                     video.srcObject = stream;
                     video.play();
@@ -85,9 +147,11 @@
             video.addEventListener('canplay', function(ev) {
                 if (!streaming) {
                     height = video.videoHeight / (video.videoWidth / width);
+
                     if (isNaN(height)) {
                         height = width / (4 / 3);
                     }
+
                     video.setAttribute('width', width);
                     video.setAttribute('height', height);
                     canvas.setAttribute('width', width);
@@ -101,43 +165,34 @@
                 ev.preventDefault();
             }, false);
 
-            function takepicture() {
-                var context = canvas.getContext('2d');
-                if (width && height) {
-                    canvas.width = width;
-                    canvas.height = height;
-                    context.drawImage(video, 0, 0, width, height);
-                    var data = canvas.toDataURL('image/png');
-                    photo.setAttribute('src', data);
-                    
-                    // Send this data to the Flask server
-                    fetch('/capture', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ image: data }),
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Success:', data);
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
-                } else {
-                    clearphoto();
-                }
-            }
+            clearphoto();
+        }
 
-            function clearphoto() {
-                var context = canvas.getContext('2d');
-                context.fillStyle = "#AAA";
-                context.fillRect(0, 0, canvas.width, canvas.height);
+        function clearphoto() {
+            var context = canvas.getContext('2d');
+            context.fillStyle = "#AAA";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            var data = canvas.toDataURL('image/png');
+            photo.setAttribute('src', data);
+        }
+
+        function takepicture() {
+            var context = canvas.getContext('2d');
+            if (width && height) {
+                canvas.width = width;
+                canvas.height = height;
+                context.drawImage(video, 0, 0, width, height);
+
                 var data = canvas.toDataURL('image/png');
                 photo.setAttribute('src', data);
+            } else {
+                clearphoto();
             }
-        })();
-    </script>
+        }
+
+        window.addEventListener('load', startup, false);
+    })();
+</script>
 </body>
 </html>

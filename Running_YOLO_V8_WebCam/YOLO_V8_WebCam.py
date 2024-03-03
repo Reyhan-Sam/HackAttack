@@ -44,7 +44,7 @@ model = YOLO("../YOLO-Weights/yolov8n.pt")  # Ensure the path to your YOLO model
 
 # Define your class names here
 class_names = [
-    "person", "apple", "banana", "water bottle", "carrot", "tomato", "potato", "onion", "lettuce", "cucumber",
+    "apple", "banana", "water bottle", "carrot", "tomato", "potato", "onion", "lettuce", "cucumber",
     "grape", "orange", "lemon", "lime", "watermelon", "peach", "strawberry", "blueberry", "raspberry", "mango",
     "pear", "cherry", "bell pepper", "broccoli", "spinach", "mushroom", "corn", "peas", "pumpkin", "sweet potato",
     "zucchini", "garlic", "ginger", "kiwi", "pineapple", "nectarine"
