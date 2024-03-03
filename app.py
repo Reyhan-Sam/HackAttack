@@ -7,6 +7,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def index():
     # Render the login page
@@ -49,21 +50,20 @@ def login():
 @app.route('/capture', methods=['POST'])
 def capture():
     data = request.get_json()
-    image_data = data['image']
-    expiry_date = data['expiryDate']  # Retrieve the expiration date from the JSON payload
-    
-    image_data = image_data.split(",")[1]  # Remove the header from the base64 encoded string
+    image_data = data['image'].split(",")[1]  # Split the data URL to get just the base64 part
     image_bytes = base64.b64decode(image_data)
+    #date
+    expiry_date = data.get('expiryDate') #date
     image = Image.open(io.BytesIO(image_bytes))
     
-    # Save the image or process it
-    image.save("captured_image.png")
-    
-    # Here, you would also save or process the expiry_date as needed
-    
-    # Respond back to the client
-    return jsonify({'message': 'Image and expiration date received successfully!'})
+    # Save the image to a file or process it
+    filepath = os.path.join('captured_images', 'captured_image.png')  # Ensure this directory exists
+    image.save(filepath)
 
+    #date
+    print("Expiration Date:", expiry_date)
+    
+    return jsonify({'message': 'Image and expiration date received successfully!'})
 
 if __name__ == "__main__":
     app.run(debug=True)
