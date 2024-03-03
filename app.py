@@ -25,14 +25,11 @@ def create_database(app):
         print('Create Database!')
 
 
-<<<<<<< HEAD
 create_database(app)
 
-=======
 rf = Roboflow(api_key="FBQSwgHbiaU0halM4Nxb")
 project = rf.workspace().project("hackattackk")
 model = project.version("1").model
->>>>>>> refs/remotes/origin/main
 
 @app.route("/")
 def index():
