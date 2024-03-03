@@ -1,4 +1,6 @@
 import math
+from flask import app
+from matplotlib import image
 from ultralytics import YOLO
 import cv2
 import mysql.connector
@@ -22,26 +24,40 @@ def connect_to_mysql():
         return None
 
 # Insert detected ingredient name into the Ingredients table
-def insert_ingredient_name(ingredient_name):
-    connection = connect_to_mysql()
-    if connection:
-        try:
-            cursor = connection.cursor()
-            sql_insert_query = """INSERT INTO Ingredients (Ingredient_Name) VALUES (%s) ON DUPLICATE KEY UPDATE Ingredient_Name = VALUES(Ingredient_Name);"""
-            cursor.execute(sql_insert_query, (ingredient_name,))
-            connection.commit()
-            print("Ingredient name inserted successfully into Ingredients table")
-        except mysql.connector.Error as error:
-            print(f"Failed to insert into MySQL table {error}")
-        finally:
-            if connection.is_connected():
-                cursor.close()
-                connection.close()
+# def insert_ingredient_name(ingredient_name):
+#     connection = connect_to_mysql()
+#     if connection:
+#         try:
+#             cursor = connection.cursor()
+#             sql_insert_query = """INSERT INTO Ingredients (Ingredient_Name) VALUES (%s) ON DUPLICATE KEY UPDATE Ingredient_Name = VALUES(Ingredient_Name);"""
+#             cursor.execute(sql_insert_query, (ingredient_name,))
+#             connection.commit()
+#             print("Ingredient name inserted successfully into Ingredients table")
+#         except mysql.connector.Error as error:
+#             print(f"Failed to insert into MySQL table {error}")
+#         finally:
+#             if connection.is_connected():
+#                 cursor.close()
+#                 connection.close()
+                
+def process_captured_images(image_path):
+    # Initialize Roboflow model
+    rf = Roboflow(api_key="FBQSwgHbiaU0halM4Nxb")
+    project = rf.workspace().project("hackattackk")
+    model = project.version("1").model
+    img=cv2.imread(image_path)
+    results=model.predict(img,confidence=40,overlap=30).json()
 
-# Initialize Roboflow model
-rf = Roboflow(api_key="FBQSwgHbiaU0halM4Nxb")
-project = rf.workspace().project("hackattackk")
-model = project.version("1").model
+    for results in results["predictions"]:
+        class_name=results["class"]
+        confidence=results["confidence"]
+        insert_ingredient_name(class_name)
+        print(f"Detected: {class_name} with confidence: {confidence}")
+
+    return class_name
+
+
+
 
 # Initialize video capture and YOLO model
 # cap = cv2.VideoCapture(0)
@@ -71,7 +87,7 @@ model = project.version("1").model
     #results = model.predict(img, stream=True)
 
 #test for tomato
-print(model.predict("C:/Users/reyha/Documents/HackAttack/HackAttack/Running_YOLO_V8_WebCam/images.jpeg", confidence=40, overlap=30).json())
+print(model.predict("C:/Users/reyha/Documents/HackAttack/HackAttack/captured_images/captured_image.png", confidence=40, overlap=30).json())
 
     # for r in results:
     #     boxes = r.boxes

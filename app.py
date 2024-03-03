@@ -1,12 +1,18 @@
+import cv2
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import base64
 from PIL import Image
 import io
 import os
 from datetime import datetime
+from roboflow import Roboflow
+
 
 app = Flask(__name__)
 
+rf = Roboflow(api_key="FBQSwgHbiaU0halM4Nxb")
+project = rf.workspace().project("hackattackk")
+model = project.version("1").model
 
 @app.route("/")
 def index():
@@ -60,10 +66,23 @@ def capture():
     filepath = os.path.join('captured_images', 'captured_image.png')  # Ensure this directory exists
     image.save(filepath)
 
-    #date
-    print("Expiration Date:", expiry_date)
+    img=cv2.imread(filepath)
+    results=model.predict(img,confidence=40,overlap=30).json()
+    predictions = results['predictions']
+    if predictions:
+        # For example, handling the most confident prediction
+        most_confident_prediction = max(predictions, key=lambda x: x['confidence'])
+        print(f"Detected: {most_confident_prediction['class']} with confidence: {most_confident_prediction['confidence']}")
+        return jsonify({'message': 'Detection successful!', 'class': most_confident_prediction['class'], 'confidence': most_confident_prediction['confidence']})
+    else:
+        print("No detection made.")
+        return jsonify({'message': 'No detection made.'})
+
+    # Print expiration date if needed
+    # print("Expiration Date:", expiry_date)
     
-    return jsonify({'message': 'Image and expiration date received successfully!'})
+    # return jsonify({'message': 'Image and expiration date received successfully!'})
 
 if __name__ == "__main__":
     app.run(debug=True)
+

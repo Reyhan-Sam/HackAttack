@@ -1,7 +1,10 @@
+import os
+import subprocess
 from flask import Flask, render_template, request, jsonify
 import base64
 from PIL import Image
 import io
+from YOLO_V8_WebCam import process_captured_images  # Adjust import based on your file structure
 
 app = Flask(__name__)
 
@@ -35,9 +38,21 @@ def capture():
     image_bytes = base64.b64decode(image_data)
     image = Image.open(io.BytesIO(image_bytes))
     # Save the image or process it
-    image.save("captured_image.png")
-    # Respond back to the client
-    return jsonify({'message': 'Image captured and saved successfully!'})
+    filepath = os.path.join('captured_images', 'captured_image.png')  # Ensure this directory exists
+    image.save(filepath)
+
+     # Process the saved image with YOLOv8
+    yolov8_results = process_captured_images(filepath)
+    print("YOLOv8 Results:", yolov8_results)
+
+    #date
+    print("Expiration Date:", expiryDate)
+    
+    
+    return jsonify({'message': 'Image and expiration date received successfully!'})
+    # image.save("captured_image.png")
+    # # Respond back to the client
+    # return jsonify({'message': 'Image captured and saved successfully!'})
 
 if __name__ == "__main__":
     app.run(debug=True)
