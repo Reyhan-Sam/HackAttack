@@ -7,6 +7,7 @@ import os
 from datetime import datetime
 from roboflow import Roboflow
 from flask_sqlalchemy import SQLAlchemy
+from models import *
 
 
 
@@ -20,7 +21,14 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
 db.init_app(app)
 
+def create_database(app):
+    if not os.path.exists("HackAttack/" + DB_NAME):
+        with app.app_context():
+            db.create_all()
+        print('Create Database!')
 
+
+create_database(app)
 
 rf = Roboflow(api_key="FBQSwgHbiaU0halM4Nxb")
 project = rf.workspace().project("hackattackk")
@@ -64,6 +72,11 @@ def login():
         return redirect(url_for('home'))
     # If the request method is GET, render the login page
     return render_template("index.html")
+
+@app.route("/viewInventory")
+def view_inventory():
+    # Render the viewInventory page
+    return render_template("viewInventory.html")
 
 @app.route('/capture', methods=['POST'])
 def capture():
