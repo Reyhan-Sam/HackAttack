@@ -82,76 +82,75 @@
 </div>
 <div class="d-flex justify-content-center">
     <div class="d-flex align-items-center mt-4">
-        <label for="amount" class="mr-2 ml-5">Expiration Date: </label>
-        <input type="text" id="Date" class="form-control" placeholder="Expiration Date " style="width: 200px">
+        <label for="date" class="mr-2 ml-5">Expiration Date: </label>
+        <input type="date" id="Date" class="form-control" placeholder="Expiration Date " style="width: 200px">
     </div>
     <div class="d-flex justify-content-center mt-4">
-        <button type="submit" class="btn bg-success font-weight-bold ml-5" onclick="window.location.href='viewInventory.html'">
+        <button type="button" id="addInventoryButton" class="btn bg-success font-weight-bold ml-5">
             Add to Inventory
         </button>
     </div>
 </div>
 
 <script>
-(function() {
-    var video = document.getElementById('video');
-    var canvas = document.getElementById('canvas');
-    var startbutton = document.getElementById('startbutton');
+    (function() {
+        var video = document.getElementById('video');
+        var canvas = document.getElementById('canvas');
+        var startbutton = document.getElementById('startbutton');
+        var addInventoryButton = document.getElementById('addInventoryButton'); // Reference to the new button
+        var imageDataUrl; // Global variable to store the image data URL
 
-    function startup() {
-        navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-        .then(function(stream) {
-            video.srcObject = stream;
-            video.play();
-        })
-        .catch(function(err) {
-            console.log("An error occurred: " + err);
-        });
+        function startup() {
+            navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+            .then(function(stream) {
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch(function(err) {
+                console.log("An error occurred: " + err);
+            });
 
-        startbutton.addEventListener('click', function(ev) {
-            takepicture();
-            ev.preventDefault();
-        }, false);
-    }
+            startbutton.addEventListener('click', function(ev) {
+                takepicture();
+                ev.preventDefault();
+            }, false);
+        }
 
-    function takepicture() {
-        var context = canvas.getContext('2d');
-        if (video.videoWidth && video.videoHeight) {
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+        function takepicture() {
+            var context = canvas.getContext('2d');
+            if (video.videoWidth && video.videoHeight) {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+                imageDataUrl = canvas.toDataURL('image/png'); // Store the image data URL
+            }
+        }
 
-            var data = canvas.toDataURL('image/png'); // Convert the image to data URL
-            // date 
-            var expiryDate = document.getElementById('Date').value;
+        addInventoryButton.addEventListener('click', function() {
+            var expiryDate = document.getElementById('Date').value; // Get the expiry date
 
-            
-            // photo.setAttribute('src', data);
-
-            // Now, send this data to your Flask backend
             fetch('/capture', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    image: data,
-                    //date
-                    expiryDate: expiryDate
+                    image: imageDataUrl,
+                    expiryDate: expiryDate // Send the expiry date along with the image
                 }),
             })
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
+                window.location.href='viewInventory.html'; // Redirect after successful capture
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
-        }
-    }
+        });
 
-    window.onload = startup; // Ensure the startup function is called when the window loads
-})();
+        window.onload = startup;
+    })();
 </script>
 </body>
 </html>
