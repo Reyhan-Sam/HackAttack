@@ -13,10 +13,10 @@ Welcome to Pantry Sidekick, your ultimate pantry management web application. Des
 
 ## Tech Stack
 
-- **Frontend**: HTML, CSS for a sleek and responsive design.
+- **Frontend**: HTML, CSS for a sleek and responsive design, enhanced with Bootstrap for styling and components.
 - **Backend**: Python with Flask, providing a robust and scalable framework.
 - **Database**: SQLite for efficient data storage and retrieval.
-- **Machine Learning**: YOLOv8 from Ultralytics, for cutting-edge visual recognition capabilities.
+- **Machine Learning**: YOLOv8 from Ultralytics, for cutting-edge visual recognition capabilities, with a custom dataset trained using Roboflow.
 
 ## Getting Started
 
@@ -42,14 +42,23 @@ cd pantry-sidekick
 pip install -r requirements.txt
 ```
 
-3. Initialize the database:
-flask shell
->>> from app import db
->>> db.create_all()
->>> exit()
+3. Set up the Flask application:
+```bash
+  export FLASK_APP=app.py
+```
 
-4.Start the Flask server:
-flask run
+4. Initialize the database:
+``` bash
+  flask shell
+  from app import db
+  db.create_all()
+  exit()
+```
 
-5. Open your browser and navigate to http://127.0.0.1:5000/ to start using Pantry Sidekick.
+5. Start the Flask server:
+```bash
+  flask run
+```
+
+6. Open your browser and navigate to http://127.0.0.1:5000/ to start using Pantry Sidekick.
 
