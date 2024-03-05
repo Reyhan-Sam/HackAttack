@@ -34,3 +34,22 @@ Follow these simple steps to get Pantry Sidekick up and running on your local ma
 1. Clone the repository:
 ```bash
 git clone https://github.com/yourusername/pantry-sidekick.git
+```
+
+2. Navigate to the project directory and install the required dependencies:
+```bash
+cd pantry-sidekick
+pip install -r requirements.txt
+```
+
+3. Initialize the database:
+flask shell
+>>> from app import db
+>>> db.create_all()
+>>> exit()
+
+4.Start the Flask server:
+flask run
+
+5. Open your browser and navigate to http://127.0.0.1:5000/ to start using Pantry Sidekick.
+
