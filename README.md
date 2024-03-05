@@ -63,7 +63,7 @@ Follow these simple steps to get Pantry Sidekick up and running on your local ma
 
 1. Clone the repository:
 ```bash
-  git clone https://github.com/yourusername/pantry-sidekick.git
+  git clone https://github.com/Reyhan-Sam/Pantry-SideKick.git
 ```
 
 2. Navigate to the project directory and install the required dependencies:
