@@ -33,7 +33,7 @@ We take pride in crafting a fully functional app with precise image detection an
 The value of food and its conservation has been a key takeaway from this project, underscoring the gravity of food wastage globally.
 
 ## What's next for Pantry Sidekick
-We aim to implement a notification system with Twilio API to alert users of impending expiries. We also plan to introduce a feature to suggest recipes based on available pantry items and user location, promoting culinary diversity and furthering our reach.
+We aim to implement a notification system with Twilio API to alert users of impending expiries. We also plan to introduce a feature to suggest recipes based on available pantry items, promoting culinary diversity and furthering our reach.
 
 ## Features
 
