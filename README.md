@@ -1,8 +1,6 @@
 # GIT HackAttack Hackathon 2024
 
 # Pantry Sidekick
-
-![Pantry Sidekick Logo](unnamed.jpg)
 <img src="unnamed.jpg" alt="GitHub Logo" width="200"/>
 
 Welcome to Pantry Sidekick, your ultimate pantry management web application. Designed to streamline the way you manage fruits and vegetables in your home, Pantry Sidekick leverages cutting-edge technology to deliver a seamless and intuitive user experience. Our application utilizes Python, Flask, HTML, and CSS, along with the powerful YOLOv8 model from Ultralytics for accurate visual recognition of your pantry items. With Pantry Sidekick, managing your pantry has never been easier!
