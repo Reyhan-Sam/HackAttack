@@ -10,6 +10,30 @@
   </tr>
 </table>
 
+## Inspiration
+The astonishing fact that Canadians wasted over 500 million dollars worth of food due to expiring products in 2022 shocked us. It motivated us to contribute to the UN's 12th Sustainable Development Goal - Responsible Consumption and Production. We created Pantry Sidekick to help users manage their food items sustainably by tracking expiration dates and reducing waste.
+
+## What it does
+Pantry Sidekick recognizes pantry items using image recognition technology and tracks the expiry dates. It aids users in efficiently determining which items are nearing expiration, promoting responsible consumption.
+
+## How we built it
+We developed Pantry Sidekick with a combination of technologies:
+
+- **Image Recognition**: The YOLOv8 model, customized with our dataset, is used for scanning and identifying food items.
+- **Backend**: We chose Python and Flask for our server-side operations with SQLite managing our data storage.
+- **Frontend**: HTML, CSS, JavaScript, and Bootstrap 4 were utilized to craft our user interface. Additionally, Adobe Fresco and Adobe Firefly helped create our app's logo and thematic background images.
+
+## Challenges we ran into
+From finding a dataset for training our model to creating our own with Roboflow, our journey was riddled with challenges. We also implemented strict version control to minimize merge conflicts, allowing us to focus on integrating our dataset and developing the app.
+
+## Accomplishments we're proud of
+We take pride in crafting a fully functional app with precise image detection and an expiration tracking system. It's an application that echoes our drive for sustainability.
+
+## What we learned
+The value of food and its conservation has been a key takeaway from this project, underscoring the gravity of food wastage globally.
+
+## What's next for Pantry Sidekick
+We aim to implement a notification system with Twilio API to alert users of impending expiries. We also plan to introduce a feature to suggest recipes based on available pantry items and user location, promoting culinary diversity and furthering our reach.
 
 ## Features
 
