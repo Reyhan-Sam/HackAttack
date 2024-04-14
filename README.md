@@ -35,6 +35,14 @@ The value of food and its conservation has been a key takeaway from this project
 ## What's next for Pantry Sidekick
 We aim to implement a notification system with Twilio API to alert users of impending expiries. We also plan to introduce a feature to suggest recipes based on available pantry items, promoting culinary diversity and furthering our reach.
 
+## Demo
+Watch our application in action in the demo video below to see how Pantry Sidekick can transform your pantry management experience:
+
+https://github.com/Reyhan-Sam/ML-Food-Waste-Management-Recognition/assets/81526349/f6a063f0-7064-45d3-8676-9d05948558f3
+
+
+
+
 ## Features
 
 - **Visual Recognition**: Instantly recognize fruits and vegetables using the advanced YOLOv8 model, simplifying the process of adding items to your pantry.
